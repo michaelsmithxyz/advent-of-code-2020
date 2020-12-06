@@ -3,7 +3,7 @@ use std::fs;
 use clap::Clap;
 
 mod day1;
-
+mod day2;
 
 #[derive(Clap)]
 struct Opts {
@@ -24,6 +24,8 @@ fn main() {
     match (opts.day, opts.part) {
         (1, 1) => day1::day1_part1(input),
         (1, 2) => day1::day1_part2(input),
+        (2, 1) => day2::day2_part1(input),
+        (2, 2) => day2::day2_part2(input),
         _ => println!("Invalid day / part combination")
     }
 }

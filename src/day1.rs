@@ -22,9 +22,8 @@ pub fn day1_part2(input: String) {
         .split_whitespace()
         .map(|v| v.parse::<u32>().unwrap())
         .combinations(3)
-        .filter(|vals| vals[0] + vals[1] + vals[2] == 2020)
+        .find(|vals| vals[0] + vals[1] + vals[2] == 2020)
         .map(|vals| vals[0] * vals[1] * vals[2])
-        .nth(0)
         .unwrap();
 
     println!("{}", answer);
