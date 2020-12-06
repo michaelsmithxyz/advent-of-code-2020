@@ -4,6 +4,7 @@ use clap::Clap;
 
 mod day1;
 mod day2;
+mod day3;
 
 #[derive(Clap)]
 struct Opts {
@@ -26,6 +27,8 @@ fn main() {
         (1, 2) => Ok(day1::day1_part2(input)),
         (2, 1) => Ok(day2::day2_part1(input)),
         (2, 2) => Ok(day2::day2_part2(input)),
+        (3, 1) => Ok(day3::day3_part1(input)),
+        (3, 2) => Ok(day3::day3_part2(input)),
         _ => Err("Invalid day / part combination")
     };
 

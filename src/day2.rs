@@ -39,11 +39,11 @@ fn is_valid_part1(row: &Row) -> bool {
     occurances >= *min && occurances <= *max
 }
 
-pub fn day2_part1(input: String) -> u32 {
+pub fn day2_part1(input: String) -> u64 {
     input.lines()
         .map(parse_row)
         .filter(is_valid_part1)
-        .count() as u32
+        .count() as u64
 }
 
 fn is_valid_part2(row: &Row) -> bool {
@@ -54,9 +54,9 @@ fn is_valid_part2(row: &Row) -> bool {
     matches_fst ^ matches_snd
 }
 
-pub fn day2_part2(input: String) -> u32 {
+pub fn day2_part2(input: String) -> u64 {
     input.lines()
         .map(parse_row)
         .filter(is_valid_part2)
-        .count() as u32
+        .count() as u64
 }
