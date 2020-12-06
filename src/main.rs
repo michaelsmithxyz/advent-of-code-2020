@@ -31,6 +31,7 @@ fn main() {
         (3, 1) => Ok(day3::day3_part1(input)),
         (3, 2) => Ok(day3::day3_part2(input)),
         (4, 1) => Ok(day4::day4_part1(input)),
+        (4, 2) => Ok(day4::day4_part2(input)),
         _ => Err("Invalid day / part combination")
     };
 
