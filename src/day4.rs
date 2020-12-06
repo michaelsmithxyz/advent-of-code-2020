@@ -103,9 +103,8 @@ pub fn day4_part1(input: String) -> u64 {
 
 fn is_valid(record: &HashMap<&str, &str>) -> bool {
     has_required_fields(record) &&
-        record.keys()
-            .all(|k|
-                VALIDATORS.get(k).unwrap()(record.get(k).unwrap()))
+        record.iter()
+            .all(|(k, v)| VALIDATORS.get(k).unwrap()(v))
 }
 
 pub fn day4_part2(input: String) -> u64 {
