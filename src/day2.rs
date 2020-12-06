@@ -32,33 +32,31 @@ fn parse_row(row: &str) -> Row {
 }
 
 fn is_valid_part1(row: &Row) -> bool {
-    let (min, max, character, password) = row.clone();
+    let (min, max, character, password) = row;
     let occurances = password
-        .matches(character)
+        .matches(*character)
         .count();
-    occurances >= min && occurances <= max
+    occurances >= *min && occurances <= *max
 }
 
-pub fn day2_part1(input: String) {
-    let count = input.lines()
+pub fn day2_part1(input: String) -> u32 {
+    input.lines()
         .map(parse_row)
         .filter(is_valid_part1)
-        .count();
-    println!("{}", count);
+        .count() as u32
 }
 
 fn is_valid_part2(row: &Row) -> bool {
-    let (fst, snd, character, password) = row.clone();
+    let (fst, snd, character, password) = row;
     let pwd_chars = password.chars().collect::<Vec<_>>();
-    let matches_fst = pwd_chars[fst - 1] == character;
-    let matches_snd = pwd_chars[snd - 1] == character;
+    let matches_fst = pwd_chars[*fst - 1] == *character;
+    let matches_snd = pwd_chars[*snd - 1] == *character;
     matches_fst ^ matches_snd
 }
 
-pub fn day2_part2(input: String) {
-    let count = input.lines()
+pub fn day2_part2(input: String) -> u32 {
+    input.lines()
         .map(parse_row)
         .filter(is_valid_part2)
-        .count();
-    println!("{}", count);
+        .count() as u32
 }
