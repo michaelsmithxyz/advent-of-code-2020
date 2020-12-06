@@ -34,54 +34,45 @@ lazy_static! {
         let mut validators: HashMap<&'static str, Validator> = HashMap::new();
 
         validators.insert("byr", |s| {
-            s.len() == 4 && {
-                let v = s.parse::<u32>();
-                v.map(|x| x >= 1920 && x <= 2002)
+            s.len() == 4 &&
+                s.parse::<u32>()
+                    .map(|x| x >= 1920 && x <= 2002)
                     .unwrap_or(false)
-            }
         });
 
         validators.insert("iyr", |s| {
-            s.len() == 4 && {
-                let v = s.parse::<u32>();
-                v.map(|x| x >= 2010 && x <= 2020)
+            s.len() == 4 &&
+                s.parse::<u32>()
+                    .map(|x| x >= 2010 && x <= 2020)
                     .unwrap_or(false)
-            }
         });
 
         validators.insert("eyr", |s| {
-            s.len() == 4 && {
-                let v = s.parse::<u32>();
-                v.map(|x| x >= 2020 && x <= 2030)
+            s.len() == 4 &&
+                s.parse::<u32>()
+                    .map(|x| x >= 2020 && x <= 2030)
                     .unwrap_or(false)
-            }
         });
 
         validators.insert("hgt", |s| {
-            s.ends_with("in") && {
+            s.ends_with("in") &&
                 s.replace("in", "")
                     .parse::<u32>()
                     .map(|i| i >= 59 && i <= 76)
                     .unwrap_or(false)
-            } || s.ends_with("cm") && {
+            || s.ends_with("cm") &&
                 s.replace("cm", "")
                     .parse::<u32>()
                     .map(|i| i >= 150 && i <= 193)
                     .unwrap_or(false)
-            }
         });
 
-        validators.insert("hcl", |s| {
-            HEX_COLOR_PATTERN.is_match(s)
-        });
+        validators.insert("hcl", |s| HEX_COLOR_PATTERN.is_match(s));
 
-        validators.insert("ecl", |s| {
-            VALID_EYE_COLORS.contains(&s)
-        });
+        validators.insert("ecl", |s| VALID_EYE_COLORS.contains(&s));
 
-        validators.insert("pid", |s| {
-            s.len() == 9 && s.chars().all(char::is_numeric)
-        });
+        validators.insert("pid", |s|
+            s.len() == 9 && s.chars().all(char::is_numeric));
 
         validators.insert("cid", |_| true);
 
