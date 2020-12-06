@@ -1,5 +1,5 @@
-use std::vec::Vec;
 use std::collections::HashMap;
+use itertools::Itertools;
 use lazy_static::lazy_static;
 use regex::Regex;
 
@@ -83,10 +83,8 @@ lazy_static! {
 fn parse_record(input: &str) -> HashMap<&str, &str> {
     input
         .split_whitespace()
-        .map(|fv| {
-            let parts: Vec<&str> = fv.split(':').collect();
-            (parts[0], parts[1])
-        })
+        .flat_map(|fv| fv.split(':'))
+        .tuples()
         .collect()
 }
 
