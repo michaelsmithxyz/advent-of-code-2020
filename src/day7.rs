@@ -11,7 +11,7 @@ lazy_static! {
     static ref ITEMS_REGEX: Regex = Regex::new(r##"(\d+) (\w+ \w+) bags?"##).unwrap();
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 struct BagRule {
     color: String,
     items: Vec<(String, u8)>
