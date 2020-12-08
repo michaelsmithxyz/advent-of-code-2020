@@ -13,8 +13,6 @@ static REQUIRED_FIELDS: [&str; 7] = [
     "pid"
 ];
 
-type Validator = fn(&str) -> bool;
-
 lazy_static! {
     static ref HEX_COLOR_PATTERN: Regex = Regex::new(r##"#[a-f\d]{6}"##).unwrap();
 }
@@ -28,57 +26,6 @@ static VALID_EYE_COLORS: [&str; 7] = [
     "hzl",
     "oth"
 ];
-
-lazy_static! {
-    static ref VALIDATORS: HashMap<&'static str, Validator> = {
-        let mut validators: HashMap<&'static str, Validator> = HashMap::new();
-
-        validators.insert("byr", |s| {
-            s.len() == 4 &&
-                s.parse::<u32>()
-                    .map(|x| x >= 1920 && x <= 2002)
-                    .unwrap_or(false)
-        });
-
-        validators.insert("iyr", |s| {
-            s.len() == 4 &&
-                s.parse::<u32>()
-                    .map(|x| x >= 2010 && x <= 2020)
-                    .unwrap_or(false)
-        });
-
-        validators.insert("eyr", |s| {
-            s.len() == 4 &&
-                s.parse::<u32>()
-                    .map(|x| x >= 2020 && x <= 2030)
-                    .unwrap_or(false)
-        });
-
-        validators.insert("hgt", |s| {
-            s.ends_with("in") &&
-                s.replace("in", "")
-                    .parse::<u32>()
-                    .map(|i| i >= 59 && i <= 76)
-                    .unwrap_or(false)
-            || s.ends_with("cm") &&
-                s.replace("cm", "")
-                    .parse::<u32>()
-                    .map(|i| i >= 150 && i <= 193)
-                    .unwrap_or(false)
-        });
-
-        validators.insert("hcl", |s| HEX_COLOR_PATTERN.is_match(s));
-
-        validators.insert("ecl", |s| VALID_EYE_COLORS.contains(&s));
-
-        validators.insert("pid", |s|
-            s.len() == 9 && s.chars().all(char::is_numeric));
-
-        validators.insert("cid", |_| true);
-
-        validators
-    };
-}
 
 fn parse_record(input: &str) -> HashMap<&str, &str> {
     input
@@ -99,10 +46,35 @@ pub fn day4_part1(input: String) -> u64 {
         .count() as u64
 }
 
+fn field_is_valid((field, value): (&&str, &&str)) -> bool {
+    match *field {
+        "byr" => value.parse::<u32>()
+            .map(|x| x >= 1920 && x <= 2002)
+            .unwrap_or(false),
+        "iyr" => value.parse::<u32>()
+            .map(|x| x >= 2010 && x <= 2020)
+            .unwrap_or(false),
+        "eyr" => value.parse::<u32>()
+            .map(|x| x >= 2020 && x <= 2030)
+            .unwrap_or(false),
+        "hgt" => {
+            let unit = &value[value.len() - 2..value.len()];
+            let height = (&value[0..value.len() - 2]).parse::<u32>();
+            height.map(|h| match unit {
+                "in" => h >= 59 && h <= 76,
+                "cm" => h >= 150 && h <= 193,
+                _ => false
+            }).unwrap_or(false)
+        },
+        "hcl" => HEX_COLOR_PATTERN.is_match(value),
+        "ecl" => VALID_EYE_COLORS.contains(&value),
+        "pid" => value.len() == 9 && value.chars().all(char::is_numeric),
+        _ => true
+    }
+}
+
 fn is_valid(record: &HashMap<&str, &str>) -> bool {
-    has_required_fields(record) &&
-        record.iter()
-            .all(|(k, v)| VALIDATORS.get(k).unwrap()(v))
+    has_required_fields(record) && record.iter().all(field_is_valid)
 }
 
 pub fn day4_part2(input: String) -> u64 {
