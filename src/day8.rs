@@ -88,14 +88,12 @@ pub fn day8_part2(input: String) -> i64 {
             Instruction::Nop(x) => Instruction::Jmp(*x),
             _ => *inst
         }))
-        // Splice the new instruction into the original program and run it
-        .map(|(idx, inst)| {
+        // Splice the new instruction into the original program and run it,
+        // stopping at the first successful run
+        .find_map(|(idx, inst)| {
             let mut new_instructions = instructions.clone();
             std::mem::replace(&mut new_instructions[idx], inst);
-            run(&initial_state, &new_instructions)
+            run(&initial_state, &new_instructions).ok()
         })
-        // Find runs that terminated
-        .filter(|r| r.is_ok())
-        // Take the first one (assumes that there's always a successful run)
-        .nth(0).unwrap().unwrap()
+        .unwrap()
 }
