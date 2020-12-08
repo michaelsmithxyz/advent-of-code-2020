@@ -44,13 +44,14 @@ pub fn day7_part1(input: String) -> u64 {
 
 fn count_contents(rules: &Vec<BagRule>, start: &str) -> u64 {
     let start_rule = rules.iter().find(|r| *r.color == *start).unwrap();
-    1 + start_rule.items
+    start_rule.items
         .iter()
-        .map(|(color, count)| (*count as u64) * count_contents(rules, color))
+        .map(|(color, count)|
+            (*count as u64) + (*count as u64) * count_contents(rules, color))
         .sum::<u64>()
 }
 
 pub fn day7_part2(input: String) -> u64 {
     let rules: Vec<BagRule> = input.lines().map(parse_rule).collect();
-    count_contents(&rules, "shiny gold") - 1
+    count_contents(&rules, "shiny gold")
 }
