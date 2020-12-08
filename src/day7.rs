@@ -1,6 +1,4 @@
 use std::vec::Vec;
-use std::collections::HashSet;
-use std::hash::Hash;
 
 use regex::Regex;
 use lazy_static::lazy_static;
@@ -28,37 +26,28 @@ fn parse_rule(line: &str) -> BagRule {
     }
 }
 
-fn union<T: Hash + Eq + Clone>(a: HashSet<T>, b: HashSet<T>) -> HashSet<T> {
-    a.union(&b).into_iter().cloned().collect()
-}
-
-fn get_inner_bags(rules: &Vec<BagRule>, start: &str) -> HashSet<String> {
+fn has_inner_bag(rules: &Vec<BagRule>, start: &str, find: &str) -> bool {
     let start_rule = rules.iter().find(|r| *r.color == *start).unwrap();
     start_rule.items
         .iter()
-        .map(|(color, _)| {
-            let mut children = get_inner_bags(rules, color);
-            children.insert(color.clone());
-            children
-        })
-        .fold(HashSet::<String>::new(), union)
+        .map(|(color, _)| color == find || has_inner_bag(rules, &color, find))
+        .any(|b| b)
 }
 
 pub fn day7_part1(input: String) -> u64 {
     let rules: Vec<BagRule> = input.lines().map(parse_rule).collect();
-    rules.clone()
-        .into_iter()
-        .map(|r| get_inner_bags(&rules, &r.color))
-        .filter(|s| s.contains("shiny gold"))
+    rules.iter()
+        .filter(|r|
+            has_inner_bag(&rules, &r.color, "shiny gold"))
         .count() as u64
 }
 
 fn count_contents(rules: &Vec<BagRule>, start: &str) -> u64 {
     let start_rule = rules.iter().find(|r| *r.color == *start).unwrap();
-    start_rule.items
+    1 + start_rule.items
         .iter()
         .map(|(color, count)| (*count as u64) * count_contents(rules, color))
-        .sum::<u64>() + 1
+        .sum::<u64>()
 }
 
 pub fn day7_part2(input: String) -> u64 {
