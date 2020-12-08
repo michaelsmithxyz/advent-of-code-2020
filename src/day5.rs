@@ -62,16 +62,16 @@ fn id((row, col): (u8, u8)) -> u16 {
     (row as u16) * 8 + (col as u16)
 }
 
-pub fn day5_part1(input: String) -> u64 {
+pub fn day5_part1(input: String) -> i64 {
     input.lines()
         .map(|l| {
             id(seat_location_from_pattern(l))
         })
         .max()
-        .unwrap() as u64
+        .unwrap() as i64
 }
 
-pub fn day5_part2(input: String) -> u64 {
+pub fn day5_part2(input: String) -> i64 {
     let mut continuous_ids: Vec<_> = input.lines()
         .map(seat_location_from_pattern)
         // Seats may be missing from either the very front or back of the plane,
@@ -83,5 +83,5 @@ pub fn day5_part2(input: String) -> u64 {
 
     let full_range: HashSet<_> = (continuous_ids[0]..continuous_ids[continuous_ids.len() - 1]).collect();
     let present_values: HashSet<_> = continuous_ids.into_iter().collect();
-    *full_range.difference(&present_values).nth(0).unwrap() as u64
+    *full_range.difference(&present_values).nth(0).unwrap() as i64
 }

@@ -34,24 +34,24 @@ fn has_inner_bag(rules: &Vec<BagRule>, start: &str, find: &str) -> bool {
         .any(|b| b)
 }
 
-pub fn day7_part1(input: String) -> u64 {
+pub fn day7_part1(input: String) -> i64 {
     let rules: Vec<BagRule> = input.lines().map(parse_rule).collect();
     rules.iter()
         .filter(|r|
             has_inner_bag(&rules, &r.color, "shiny gold"))
-        .count() as u64
+        .count() as i64
 }
 
-fn count_contents(rules: &Vec<BagRule>, start: &str) -> u64 {
+fn count_contents(rules: &Vec<BagRule>, start: &str) -> i64 {
     let start_rule = rules.iter().find(|r| *r.color == *start).unwrap();
     start_rule.items
         .iter()
         .map(|(color, count)|
-            (*count as u64) + (*count as u64) * count_contents(rules, color))
-        .sum::<u64>()
+            (*count as i64) + (*count as i64) * count_contents(rules, color))
+        .sum::<i64>()
 }
 
-pub fn day7_part2(input: String) -> u64 {
+pub fn day7_part2(input: String) -> i64 {
     let rules: Vec<BagRule> = input.lines().map(parse_rule).collect();
     count_contents(&rules, "shiny gold")
 }

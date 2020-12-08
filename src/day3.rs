@@ -6,7 +6,7 @@ pub fn read_topo(input: String) -> Vec<Vec<char>> {
         .collect::<Vec<_>>()
 }
 
-pub fn measure_slope(topo: &Vec<Vec<char>>, right: usize, down: usize) -> u64 {
+pub fn measure_slope(topo: &Vec<Vec<char>>, right: usize, down: usize) -> i64 {
     topo
         .iter()
         .step_by(down)
@@ -22,11 +22,11 @@ pub fn measure_slope(topo: &Vec<Vec<char>>, right: usize, down: usize) -> u64 {
         .sum()
 }
 
-pub fn day3_part1(input: String) -> u64 {
+pub fn day3_part1(input: String) -> i64 {
     measure_slope(&read_topo(input), 3, 1)
 }
 
-pub fn day3_part2(input: String) -> u64 {
+pub fn day3_part2(input: String) -> i64 {
     let topo = read_topo(input);
     measure_slope(&topo, 1, 1)
         * measure_slope(&topo, 3, 1)

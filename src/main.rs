@@ -9,6 +9,7 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
 
 #[derive(Clap)]
 struct Opts {
@@ -39,6 +40,8 @@ fn main() {
         (6, 2) => Ok(day6::day6_part2(input)),
         (7, 1) => Ok(day7::day7_part1(input)),
         (7, 2) => Ok(day7::day7_part2(input)),
+        (8, 1) => Ok(day8::day8_part1(input)),
+        (8, 2) => Ok(day8::day8_part2(input)),
         _ => Err("Invalid day / part combination")
     };
 

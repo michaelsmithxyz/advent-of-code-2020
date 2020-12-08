@@ -39,11 +39,11 @@ fn has_required_fields(record: &HashMap<&str, &str>) -> bool {
     REQUIRED_FIELDS.iter().all(|k| record.contains_key(k))
 }
 
-pub fn day4_part1(input: String) -> u64 {
+pub fn day4_part1(input: String) -> i64 {
     input.split("\n\n")
         .map(parse_record)
         .filter(has_required_fields)
-        .count() as u64
+        .count() as i64
 }
 
 fn field_is_valid((field, value): (&&str, &&str)) -> bool {
@@ -77,9 +77,9 @@ fn is_valid(record: &HashMap<&str, &str>) -> bool {
     has_required_fields(record) && record.iter().all(field_is_valid)
 }
 
-pub fn day4_part2(input: String) -> u64 {
+pub fn day4_part2(input: String) -> i64 {
     input.split("\n\n")
         .map(parse_record)
         .filter(is_valid)
-        .count() as u64
+        .count() as i64
 }
